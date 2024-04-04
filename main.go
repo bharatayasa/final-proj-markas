@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/bharatayasa/mini-project3-markas/config"
+	"github.com/bharatayasa/final-project/config"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 )

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/bharatayasa/mini-project3-markas/config"
+	"github.com/bharatayasa/final-project/config"
 	"github.com/joho/godotenv"
 )
 

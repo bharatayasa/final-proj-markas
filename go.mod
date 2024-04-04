@@ -3,7 +3,6 @@ module github.com/bharatayasa/final-project
 go 1.22.0
 
 require (
-	github.com/bharatayasa/mini-project3-markas v0.0.0-20240326153226-b7066f75e447
 	github.com/gofiber/fiber/v2 v2.52.4
 	github.com/joho/godotenv v1.5.1
 	gorm.io/driver/mysql v1.5.6
