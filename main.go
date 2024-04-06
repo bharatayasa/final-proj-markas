@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/bharatayasa/final-project/config"
+	"github.com/bharatayasa/final-project/router"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 )
@@ -21,9 +22,7 @@ func main() {
 	config.OpenDb()
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("hallo world")
-	})
+	router.RouterDatabaseBackup(app)
 
 	log.Fatal(app.Listen(":3000"))
 }
