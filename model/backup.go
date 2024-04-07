@@ -50,7 +50,10 @@ func (bu *DatabaseBackup) GetLatest(db *gorm.DB) ([]DatabaseBackup, error) {
 func (bu *DatabaseBackup) GetByDbName(db *gorm.DB, dbName string) ([]DatabaseBackup, error) {
 	var backups []DatabaseBackup
 
-	err := db.Where("database_name = ?", dbName).Find(&backups).Error
+	err := db.
+		Where("database_name = ?", dbName).
+		Find(&backups).
+		Error
 	if err != nil {
 		return nil, err
 	}
