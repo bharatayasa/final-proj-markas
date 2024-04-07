@@ -26,7 +26,7 @@ func (bu *DatabaseBackup) Create(db *gorm.DB) (*DatabaseBackup, error) {
 	return bu, nil
 }
 
-func (cr *DatabaseBackup) GetLatest(db *gorm.DB) ([]DatabaseBackup, error) {
+func (bu *DatabaseBackup) GetLatest(db *gorm.DB) ([]DatabaseBackup, error) {
 	var latestBackups []DatabaseBackup
 
 	subquery := db.
@@ -47,7 +47,7 @@ func (cr *DatabaseBackup) GetLatest(db *gorm.DB) ([]DatabaseBackup, error) {
 	return latestBackups, nil
 }
 
-func (cr *DatabaseBackup) GetByDbName(db *gorm.DB, dbName string) ([]DatabaseBackup, error) {
+func (bu *DatabaseBackup) GetByDbName(db *gorm.DB, dbName string) ([]DatabaseBackup, error) {
 	var backups []DatabaseBackup
 
 	err := db.Where("database_name = ?", dbName).Find(&backups).Error
