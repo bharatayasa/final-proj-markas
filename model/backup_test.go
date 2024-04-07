@@ -19,25 +19,6 @@ func Init() {
 	config.OpenDb()
 }
 
-func TestGetAll(t *testing.T) {
-	Init()
-
-	backupData := model.DatabaseBackup{
-		File_name:     "hahaahahs.zip",
-		Database_name: "db_3",
-		File_path:     "haha/jsha.sajsa.zip",
-	}
-
-	_, err := backupData.Create(config.Mysql.DB)
-	assert.Nil(t, err)
-
-	res, err := backupData.GetAll(config.Mysql.DB)
-	assert.Nil(t, err)
-	assert.GreaterOrEqual(t, len(res), 1)
-
-	fmt.Println(res)
-}
-
 func TestGetLatest(t *testing.T) {
 	Init()
 
@@ -57,15 +38,21 @@ func TestGetLatest(t *testing.T) {
 	fmt.Println(res)
 }
 
-func TestCreateBackup(t *testing.T) {
+func TestGetByDbName(t *testing.T) {
 	Init()
 
 	backupData := model.DatabaseBackup{
 		File_name:     "hahaahahs.zip",
-		Database_name: "db_4",
+		Database_name: "db_3",
 		File_path:     "haha/jsha.sajsa.zip",
 	}
 
 	_, err := backupData.Create(config.Mysql.DB)
 	assert.Nil(t, err)
+
+	res, err := backupData.GetByDbName(config.Mysql.DB, backupData.Database_name)
+	assert.Nil(t, err)
+	assert.GreaterOrEqual(t, len(res), 1)
+
+	fmt.Println(res)
 }

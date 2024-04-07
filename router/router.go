@@ -7,4 +7,5 @@ import (
 
 func RouterDatabaseBackup(app *fiber.App) {
 	app.Get("/", controller.GetDatabaseLatest)
+	app.Get("/:database_name", controller.GetDatabaseByDbName)
 }

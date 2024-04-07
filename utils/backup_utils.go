@@ -10,3 +10,9 @@ func GetLatestUtils() ([]model.DatabaseBackup, error) {
 
 	return Backup.GetLatest(config.Mysql.DB)
 }
+
+func GetByDbNametUtils(dbName string) ([]model.DatabaseBackup, error) {
+	var Backup model.DatabaseBackup
+
+	return Backup.GetByDbName(config.Mysql.DB, dbName)
+}

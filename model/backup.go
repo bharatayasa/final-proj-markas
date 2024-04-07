@@ -14,6 +14,18 @@ type DatabaseBackup struct {
 	File_path     string    `gorm:"not null" json:"file_path"`
 }
 
+func (bu *DatabaseBackup) Create(db *gorm.DB) (*DatabaseBackup, error) {
+	err := db.
+		Create(&bu).
+		Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return bu, nil
+}
+
 func (cr *DatabaseBackup) GetLatest(db *gorm.DB) ([]DatabaseBackup, error) {
 	var latestBackups []DatabaseBackup
 
@@ -35,29 +47,13 @@ func (cr *DatabaseBackup) GetLatest(db *gorm.DB) ([]DatabaseBackup, error) {
 	return latestBackups, nil
 }
 
-func (cr *DatabaseBackup) GetAll(db *gorm.DB) ([]DatabaseBackup, error) {
-	res := []DatabaseBackup{}
+func (cr *DatabaseBackup) GetByDbName(db *gorm.DB, dbName string) ([]DatabaseBackup, error) {
+	var backups []DatabaseBackup
 
-	err := db.
-		Model(DatabaseBackup{}).
-		Find(&res).
-		Error
-
-	if err != nil {
-		return []DatabaseBackup{}, err
-	}
-
-	return res, nil
-}
-
-func (bu *DatabaseBackup) Create(db *gorm.DB) (*DatabaseBackup, error) {
-	err := db.
-		Create(&bu).
-		Error
-
+	err := db.Where("database_name = ?", dbName).Find(&backups).Error
 	if err != nil {
 		return nil, err
 	}
 
-	return bu, nil
+	return backups, nil
 }

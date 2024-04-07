@@ -35,26 +35,41 @@ func GetDatabaseLatest(c *fiber.Ctx) error {
 	})
 }
 
-// func AddBackupData(c *fiber.Ctx) error {
-// 	var data model.DatabaseBackup
+func GetDatabaseByDbName(c *fiber.Ctx) error {
+	dbName := c.Params("database_name")
 
-// 	if err := c.BodyParser(&data); err != nil {
-// 		logrus.Error("Error on parsing cars data: ", err.Error())
-// 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
-// 			"message": "Server Error",
-// 		})
-// 	}
+	if dbName == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Database name is required",
+		})
+	}
 
-// 	err := utils.InsertBackupData(data)
+	backups, err := utils.GetByDbNametUtils(dbName)
+	if err != nil {
+		logrus.Error("Error on get backups by database name: ", err.Error())
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Server Error",
+		})
+	}
 
-// 	if err != nil {
-// 		logrus.Error("Error on insert cars data: ", err.Error())
-// 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
-// 			"message": "Server Error",
-// 		})
-// 	}
-// 	return c.Status(fiber.StatusOK).JSON(&fiber.Map{
-// 		"data":    data,
-// 		"message": "Success",
-// 	})
-// }
+	histories := make([]map[string]interface{}, 0)
+
+	for _, data := range backups {
+		history := map[string]interface{}{
+			"id":        data.ID,
+			"file_name": data.File_name,
+			"timestamp": data.Timestamp,
+		}
+		histories = append(histories, history)
+	}
+
+	response := fiber.Map{
+		"data": fiber.Map{
+			"database_name": dbName,
+			"histories":     histories,
+		},
+		"message": "success",
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response)
+}
