@@ -95,7 +95,6 @@ func InsertNewData(c *fiber.Ctx) error {
 		})
 	}
 
-	// Simpan file di local storage
 	filePath := fmt.Sprintf("./uploads/%s", file.Filename)
 	if err := c.SaveFile(file, filePath); err != nil {
 		logrus.Error("Error saving file:", err.Error())
@@ -104,7 +103,6 @@ func InsertNewData(c *fiber.Ctx) error {
 		})
 	}
 
-	// Membuat entri baru untuk database backup
 	backupData := model.DatabaseBackup{
 		Timestamp:     time.Now(),
 		File_name:     file.Filename,
@@ -112,8 +110,7 @@ func InsertNewData(c *fiber.Ctx) error {
 		File_path:     filePath,
 	}
 
-	// Memanggil utilitas untuk memasukkan data
-	_, err = utils.InsertDataUtils(&backupData)
+	insertedData, err := utils.InsertDataUtils(&backupData)
 	if err != nil {
 		logrus.Error("Error inserting data using utils:", err.Error())
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -121,7 +118,15 @@ func InsertNewData(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "Data inserted successfully",
-	})
+	response := fiber.Map{
+		"data": fiber.Map{
+			"id":            insertedData.ID,
+			"database_name": insertedData.Database_name,
+			"file_name":     insertedData.File_name,
+			"timestamp":     insertedData.Timestamp,
+		},
+		"message": "success",
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response)
 }
