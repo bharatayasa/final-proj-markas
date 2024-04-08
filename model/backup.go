@@ -26,6 +26,18 @@ func (bu *DatabaseBackup) Create(db *gorm.DB) (*DatabaseBackup, error) {
 	return bu, nil
 }
 
+func (bu *DatabaseBackup) InsertData(db *gorm.DB) (*DatabaseBackup, error) {
+	err := db.
+		Create(&bu).
+		Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return bu, nil
+}
+
 func (bu *DatabaseBackup) GetLatest(db *gorm.DB) ([]DatabaseBackup, error) {
 	var latestBackups []DatabaseBackup
 

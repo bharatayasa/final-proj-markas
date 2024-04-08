@@ -16,3 +16,8 @@ func GetByDbNametUtils(dbName string) ([]model.DatabaseBackup, error) {
 
 	return Backup.GetByDbName(config.Mysql.DB, dbName)
 }
+
+func InsertDataUtils(backup *model.DatabaseBackup) (*model.DatabaseBackup, error) {
+
+	return backup.InsertData(config.Mysql.DB)
+}

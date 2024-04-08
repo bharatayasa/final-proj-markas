@@ -1,6 +1,10 @@
 package controller
 
 import (
+	"fmt"
+	"time"
+
+	"github.com/bharatayasa/final-project/model"
 	"github.com/bharatayasa/final-project/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sirupsen/logrus"
@@ -72,4 +76,52 @@ func GetDatabaseByDbName(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
+}
+
+func InsertNewData(c *fiber.Ctx) error {
+	dbName := c.Params("database_name")
+
+	if dbName == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Database name is required",
+		})
+	}
+
+	file, err := c.FormFile("file_name")
+	if err != nil {
+		logrus.Error("Error getting file:", err.Error())
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Failed to get file",
+		})
+	}
+
+	// Simpan file di local storage
+	filePath := fmt.Sprintf("./uploads/%s", file.Filename)
+	if err := c.SaveFile(file, filePath); err != nil {
+		logrus.Error("Error saving file:", err.Error())
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Failed to save file",
+		})
+	}
+
+	// Membuat entri baru untuk database backup
+	backupData := model.DatabaseBackup{
+		Timestamp:     time.Now(),
+		File_name:     file.Filename,
+		Database_name: dbName,
+		File_path:     filePath,
+	}
+
+	// Memanggil utilitas untuk memasukkan data
+	_, err = utils.InsertDataUtils(&backupData)
+	if err != nil {
+		logrus.Error("Error inserting data using utils:", err.Error())
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Failed to insert data using utils",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Data inserted successfully",
+	})
 }

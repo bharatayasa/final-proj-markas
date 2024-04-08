@@ -23,7 +23,7 @@ func TestGetLatest(t *testing.T) {
 	Init()
 
 	backupData := model.DatabaseBackup{
-		File_name:     "hahaahahs.zip",
+		File_name:     "mysql-2023-10-29-00-00-00-cv_kucing_oren-8634bf3f-23b5-45a7-8b78-fe9b1a3bcf66.sql.zip",
 		Database_name: "db_5",
 		File_path:     "haha/jsha.sajsa.zip",
 	}
@@ -42,7 +42,7 @@ func TestGetByDbName(t *testing.T) {
 	Init()
 
 	backupData := model.DatabaseBackup{
-		File_name:     "hahaahahs.zip",
+		File_name:     "mysql-2023-10-29-00-00-00-cv_kucing_oren-8634bf3f-23b5-45a7-8b78-fe9b1a3bcf66.sql.zip",
 		Database_name: "db_3",
 		File_path:     "haha/jsha.sajsa.zip",
 	}
@@ -55,4 +55,17 @@ func TestGetByDbName(t *testing.T) {
 	assert.GreaterOrEqual(t, len(res), 1)
 
 	fmt.Println(res)
+}
+
+func TestInsertData(t *testing.T) {
+	Init()
+
+	backupData := model.DatabaseBackup{
+		File_name:     "mysql-2023-10-29-00-00-00-cv_kucing_oren-8634bf3f-23b5-45a7-8b78-fe9b1a3bcf66.sql.zip",
+		Database_name: "db_3",
+		File_path:     "haha/jsha.sajsa.zip",
+	}
+
+	_, err := backupData.InsertData(config.Mysql.DB)
+	assert.Nil(t, err)
 }
