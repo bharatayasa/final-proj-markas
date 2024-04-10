@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/bharatayasa/final-project/model"
@@ -129,4 +130,48 @@ func InsertNewData(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
+}
+
+func DownloadFile(c *fiber.Ctx) error {
+	idParam := c.Params("id")
+
+	id, err := strconv.ParseUint(idParam, 10, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid ID format",
+		})
+	}
+
+	type DownloadRequest struct {
+		FilePath string `json:"file_path"`
+	}
+	var requestBody DownloadRequest
+	if err := c.BodyParser(&requestBody); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Failed to parse request body",
+		})
+	}
+
+	if requestBody.FilePath == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "File path is required in the request body",
+		})
+	}
+
+	backupData, err := utils.DownloadFileUtils(uint(id), requestBody.FilePath)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Failed to download file",
+		})
+	}
+
+	if backupData == nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "File not found for the given ID and file path",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "File successfully retrieved",
+	})
 }

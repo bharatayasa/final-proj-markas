@@ -28,7 +28,7 @@ func TestGetLatest(t *testing.T) {
 		File_path:     "haha/jsha.sajsa.zip",
 	}
 
-	_, err := backupData.Create(config.Mysql.DB)
+	_, err := backupData.InsertData(config.Mysql.DB)
 	assert.Nil(t, err)
 
 	res, err := backupData.GetLatest(config.Mysql.DB)
@@ -47,7 +47,7 @@ func TestGetByDbName(t *testing.T) {
 		File_path:     "haha/jsha.sajsa.zip",
 	}
 
-	_, err := backupData.Create(config.Mysql.DB)
+	_, err := backupData.InsertData(config.Mysql.DB)
 	assert.Nil(t, err)
 
 	res, err := backupData.GetByDbName(config.Mysql.DB, backupData.Database_name)
@@ -68,4 +68,36 @@ func TestInsertData(t *testing.T) {
 
 	_, err := backupData.InsertData(config.Mysql.DB)
 	assert.Nil(t, err)
+}
+func TestDownloadFile(t *testing.T) {
+	Init()
+
+	backupData := model.DatabaseBackup{
+		File_name:     "tes copy.zip",
+		Database_name: "db_1",
+		File_path:     "./uploads/copy.zip",
+	}
+
+	_, err := backupData.InsertData(config.Mysql.DB)
+	if err != nil {
+		t.Fatalf("Failed to insert backup data: %v", err)
+	}
+
+	id := backupData.ID
+
+	// Memanggil metode DownloadFile untuk mengunduh file dengan ID dan file path yang sesuai
+	downloadedFile, err := backupData.DownloadFile(config.Mysql.DB, id, backupData.File_path)
+	if err != nil {
+		t.Fatalf("Failed to download file: %v", err)
+	}
+
+	// Memeriksa apakah file yang diunduh sama dengan file yang disimpan
+	if downloadedFile.File_name != backupData.File_name || downloadedFile.Database_name != backupData.Database_name || downloadedFile.File_path != backupData.File_path {
+		t.Fatalf("Downloaded file does not match expected data")
+	}
+
+	// Memeriksa apakah file yang diunduh memiliki ID yang sama dengan yang diharapkan
+	if downloadedFile.ID != id {
+		t.Fatalf("Downloaded file has unexpected ID")
+	}
 }
