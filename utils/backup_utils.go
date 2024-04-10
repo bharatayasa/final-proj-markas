@@ -1,6 +1,11 @@
 package utils
 
 import (
+	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+
 	"github.com/bharatayasa/final-project/config"
 	"github.com/bharatayasa/final-project/model"
 )
@@ -31,4 +36,25 @@ func DownloadFileUtils(ID uint, File_path string) (*model.DatabaseBackup, error)
 	}
 
 	return backupData, nil
+}
+
+func MoveFileUtils(sourcePath, destinationPath string) error {
+	sourceFile, err := os.Open(sourcePath)
+	if err != nil {
+		return fmt.Errorf("failed to open source file: %w", err)
+	}
+	defer sourceFile.Close()
+
+	destinationFile, err := os.Create(filepath.Join(destinationPath, filepath.Base(sourcePath)))
+	if err != nil {
+		return fmt.Errorf("failed to create destination file: %w", err)
+	}
+	defer destinationFile.Close()
+
+	_, err = io.Copy(destinationFile, sourceFile)
+	if err != nil {
+		return fmt.Errorf("failed to copy file content: %w", err)
+	}
+
+	return nil
 }

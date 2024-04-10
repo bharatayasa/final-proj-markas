@@ -171,7 +171,15 @@ func DownloadFile(c *fiber.Ctx) error {
 		})
 	}
 
+	downloadPath := "./downloads"
+
+	if err := utils.MoveFileUtils(requestBody.FilePath, downloadPath); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Failed to move downloaded file",
+		})
+	}
+
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "File successfully retrieved",
+		"message": "File successfully retrieved and saved to the specified download path",
 	})
 }
