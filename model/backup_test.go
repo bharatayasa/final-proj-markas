@@ -85,18 +85,15 @@ func TestDownloadFile(t *testing.T) {
 
 	id := backupData.ID
 
-	// Memanggil metode DownloadFile untuk mengunduh file dengan ID dan file path yang sesuai
 	downloadedFile, err := backupData.DownloadFile(config.Mysql.DB, id, backupData.File_path)
 	if err != nil {
 		t.Fatalf("Failed to download file: %v", err)
 	}
 
-	// Memeriksa apakah file yang diunduh sama dengan file yang disimpan
 	if downloadedFile.File_name != backupData.File_name || downloadedFile.Database_name != backupData.Database_name || downloadedFile.File_path != backupData.File_path {
 		t.Fatalf("Downloaded file does not match expected data")
 	}
 
-	// Memeriksa apakah file yang diunduh memiliki ID yang sama dengan yang diharapkan
 	if downloadedFile.ID != id {
 		t.Fatalf("Downloaded file has unexpected ID")
 	}
