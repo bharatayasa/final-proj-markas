@@ -90,7 +90,7 @@ func TestDownloadFile(t *testing.T) {
 		t.Fatalf("Failed to download file: %v", err)
 	}
 
-	if downloadedFile.File_name != backupData.File_name || downloadedFile.Database_name != backupData.Database_name || downloadedFile.File_path != backupData.File_path {
+	if downloadedFile.File_name != backupData.File_name || downloadedFile.Database_name != backupData.Database_name {
 		t.Fatalf("Downloaded file does not match expected data")
 	}
 

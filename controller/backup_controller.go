@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/bharatayasa/final-project/model"
@@ -80,11 +81,17 @@ func GetDatabaseByDbName(c *fiber.Ctx) error {
 }
 
 func InsertNewData(c *fiber.Ctx) error {
-	dbName := c.Params("database_name")
+	Database_name := c.Params("database_name")
 
-	if dbName == "" {
+	if Database_name == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Database name is required",
+		})
+	}
+
+	if !isValidString(Database_name) {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid database name format",
 		})
 	}
 
@@ -96,8 +103,14 @@ func InsertNewData(c *fiber.Ctx) error {
 		})
 	}
 
-	filePath := fmt.Sprintf("./uploads/%s", file.Filename)
-	if err := c.SaveFile(file, filePath); err != nil {
+	if !isValidZipFile(file.Filename) {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid file format. Only .zip files are allowed",
+		})
+	}
+
+	File_path := fmt.Sprintf("./uploads/%s", file.Filename)
+	if err := c.SaveFile(file, File_path); err != nil {
 		logrus.Error("Error saving file:", err.Error())
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Failed to save file",
@@ -107,8 +120,8 @@ func InsertNewData(c *fiber.Ctx) error {
 	backupData := model.DatabaseBackup{
 		Timestamp:     time.Now(),
 		File_name:     file.Filename,
-		Database_name: dbName,
-		File_path:     filePath,
+		Database_name: Database_name,
+		File_path:     File_path,
 	}
 
 	insertedData, err := utils.InsertDataUtils(&backupData)
@@ -130,6 +143,14 @@ func InsertNewData(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
+}
+
+func isValidString(s string) bool {
+	return len(s) > 0
+}
+
+func isValidZipFile(filename string) bool {
+	return strings.HasSuffix(filename, ".zip")
 }
 
 func DownloadFile(c *fiber.Ctx) error {
