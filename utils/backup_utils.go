@@ -29,17 +29,6 @@ func InsertDataUtils(backup *model.DatabaseBackup) (*model.DatabaseBackup, error
 	return backup.InsertData(config.Mysql.DB)
 }
 
-func DownloadFileUtils(ID uint, File_path string) (*model.DatabaseBackup, error) {
-	var backup model.DatabaseBackup
-
-	backupData, err := (&backup).DownloadFile(config.Mysql.DB, ID, File_path)
-	if err != nil {
-		return nil, err
-	}
-
-	return backupData, nil
-}
-
 func GetFilePathByID(id uint) (string, error) {
 	var backup model.DatabaseBackup
 

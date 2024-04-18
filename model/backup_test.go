@@ -88,32 +88,3 @@ func TestInsertData(t *testing.T) {
 	_, err := backupData.InsertData(config.Mysql.DB)
 	assert.Nil(t, err)
 }
-func TestDownloadFile(t *testing.T) {
-	Init()
-
-	backupData := model.DatabaseBackup{
-		File_name:     "tes copy.zip",
-		Database_name: "db_1",
-		File_path:     "./uploads/copy.zip",
-	}
-
-	_, err := backupData.InsertData(config.Mysql.DB)
-	if err != nil {
-		t.Fatalf("Failed to insert backup data: %v", err)
-	}
-
-	id := backupData.ID
-
-	downloadedFile, err := backupData.DownloadFile(config.Mysql.DB, id, backupData.File_path)
-	if err != nil {
-		t.Fatalf("Failed to download file: %v", err)
-	}
-
-	if downloadedFile.File_name != backupData.File_name || downloadedFile.Database_name != backupData.Database_name {
-		t.Fatalf("Downloaded file does not match expected data")
-	}
-
-	if downloadedFile.ID != id {
-		t.Fatalf("Downloaded file has unexpected ID")
-	}
-}

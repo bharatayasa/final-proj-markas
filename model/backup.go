@@ -8,7 +8,7 @@ import (
 
 type DatabaseBackup struct {
 	ID            uint      `gorm:"primarykey" json:"id"`
-	Timestamp     time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"timestamp"`
+	Timestamp     time.Time `gorm:"not null" json:"timestamp"`
 	File_name     string    `gorm:"not null" json:"file_name"`
 	Database_name string    `gorm:"not null" json:"database_name"`
 	File_path     string    `gorm:"not null" json:"file_path"`
@@ -73,20 +73,4 @@ func (bu *DatabaseBackup) InsertData(db *gorm.DB) (*DatabaseBackup, error) {
 	}
 
 	return bu, nil
-}
-
-func (bu *DatabaseBackup) DownloadFile(db *gorm.DB, ID uint, File_path string) (*DatabaseBackup, error) {
-	var backup DatabaseBackup
-
-	err := db.
-		Where("id = ?", ID).
-		Where("file_path = ?", File_path).
-		First(&backup).
-		Error
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &backup, nil
 }
