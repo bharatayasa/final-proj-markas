@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/bharatayasa/final-project/config"
 	"github.com/bharatayasa/final-project/model"
+	"gorm.io/gorm"
 )
 
 func GetLatestUtils() ([]model.DatabaseBackup, error) {
@@ -36,6 +38,24 @@ func DownloadFileUtils(ID uint, File_path string) (*model.DatabaseBackup, error)
 	}
 
 	return backupData, nil
+}
+
+func GetFilePathByID(id uint) (string, error) {
+	var backup model.DatabaseBackup
+
+	backupData, err := backup.GetById(config.Mysql.DB, id)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return "", fmt.Errorf("no file path found for the given ID: %d", id)
+		}
+		return "", fmt.Errorf("failed to retrieve file path for the given ID: %w", err)
+	}
+
+	if len(backupData) == 0 {
+		return "", fmt.Errorf("no file path found for the given ID: %d", id)
+	}
+
+	return backupData[0].File_path, nil
 }
 
 func MoveFileUtils(sourcePath, destinationPath string) error {

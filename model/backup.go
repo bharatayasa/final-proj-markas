@@ -49,6 +49,20 @@ func (bu *DatabaseBackup) GetByDbName(db *gorm.DB, dbName string) ([]DatabaseBac
 	return backups, nil
 }
 
+func (bu *DatabaseBackup) GetById(db *gorm.DB, id uint) ([]DatabaseBackup, error) {
+	var backups []DatabaseBackup
+
+	err := db.
+		Where("id = ?", id).
+		First(&backups).
+		Error
+	if err != nil {
+		return nil, err
+	}
+
+	return backups, nil
+}
+
 func (bu *DatabaseBackup) InsertData(db *gorm.DB) (*DatabaseBackup, error) {
 	err := db.
 		Create(&bu).

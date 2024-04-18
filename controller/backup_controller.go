@@ -163,38 +163,16 @@ func DownloadFile(c *fiber.Ctx) error {
 		})
 	}
 
-	type DownloadRequest struct {
-		FilePath string `json:"file_path"`
-	}
-	var requestBody DownloadRequest
-	if err := c.BodyParser(&requestBody); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Failed to parse request body",
-		})
-	}
-
-	if requestBody.FilePath == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "File path is required in the request body",
-		})
-	}
-
-	backupData, err := utils.DownloadFileUtils(uint(id), requestBody.FilePath)
+	filePath, err := utils.GetFilePathByID(uint(id))
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Failed to download file",
-		})
-	}
-
-	if backupData == nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "File not found for the given ID and file path",
+			"message": "File not found for the given ID",
 		})
 	}
 
 	downloadPath := "./downloads"
 
-	if err := utils.MoveFileUtils(requestBody.FilePath, downloadPath); err != nil {
+	if err := utils.MoveFileUtils(filePath, downloadPath); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Failed to move downloaded file",
 		})
