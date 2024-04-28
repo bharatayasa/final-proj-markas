@@ -14,7 +14,7 @@ Now you can test using Postman with http://127.0.0.1:3000.
 
 1. **GET `/`**
 
-   - Middleware: Authorization (Fill the value with your secret key)
+   - Middleware: bearer token (Fill the value with your secret key)
    - Response:
      ```json
      {
