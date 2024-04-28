@@ -67,7 +67,7 @@ Now you can test using Postman with http://127.0.0.1:3000.
 
 3. **POST `/{db_name}`**
 
-   - Middleware: Authorization (Fill the value with your secret key)
+   - Middleware: bearer token (Fill the value with your secret key)
    - Body Request form-data:
      - Key1 type text: `database_name`
      - Key2 type file: `file_name`
@@ -89,7 +89,7 @@ Now you can test using Postman with http://127.0.0.1:3000.
 
 4. **GET `/{id}/{download}`**
 
-   - Middleware: Authorization (Fill the value with your secret key)
+   - Middleware: bearer token (Fill the value with your secret key)
    - Response:
      ```json
      {
