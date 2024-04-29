@@ -43,9 +43,9 @@ Now you can test using Postman with http://127.0.0.1:3000.
 2. **GET `/{database_name}`**
 
 ## Middleware: Bearer Token 
-  - Fill the value with your secret key
+    - Fill the value with your secret key
 
-## Response:
+   - Response:
     ```json
         {
         "data": {
@@ -66,7 +66,6 @@ Now you can test using Postman with http://127.0.0.1:3000.
         "message": "success"
         }
     ```
-
 
 3. **POST `/{db_name}`**
 
