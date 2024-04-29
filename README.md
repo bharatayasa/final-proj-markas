@@ -17,25 +17,27 @@ Now you can test using Postman with http://127.0.0.1:3000.
    - Middleware: bearer token (Fill the value with your secret key)
    - Response:
      ```json
-    "data": [
-        {
-            "database_name": "information_schema",
-            "latest_backup": {
-                "file_name": "msql-2024-04-29-14-33-28-information_schema-ed9a9059-86aa-4914-81b8-31a2c9c07cc1.sql.zip",
-                "id": 9,
-                "timestamp": "2024-04-29T14:33:28.328+08:00"
-            }
-        },
-        {
-            "database_name": "perpus_markas",
-            "latest_backup": {
-                "file_name": "msql-2024-04-29-14-33-28-perpus_markas-089f5a41-1876-47bd-8199-7203953768e5.sql.zip",
-                "id": 10,
-                "timestamp": "2024-04-29T14:33:28.327+08:00"
-            }
-        },
-    ],
-    "message": "Success"
+     {
+        "data": [
+            {
+                "database_name": "information_schema",
+                "latest_backup": {
+                    "file_name": "msql-2024-04-29-14-33-28-information_schema-ed9a9059-86aa-4914-81b8-31a2c9c07cc1.sql.zip",
+                    "id": 9,
+                    "timestamp": "2024-04-29T14:33:28.328+08:00"
+                }
+            },
+            {
+                "database_name": "perpus_markas",
+                "latest_backup": {
+                    "file_name": "msql-2024-04-29-14-33-28-perpus_markas-089f5a41-1876-47bd-8199-7203953768e5.sql.zip",
+                    "id": 10,
+                    "timestamp": "2024-04-29T14:33:28.327+08:00"
+                }
+            },
+        ],
+        "message": "Success"
+     }
      ```
 
 2. **GET `/{database_name}`**
@@ -44,25 +46,26 @@ Now you can test using Postman with http://127.0.0.1:3000.
   - Fill the value with your secret key
 
 ## Response:
-```json
-{
-  "data": {
-    "database_name": "information_schema",
-    "histories": [
-      {
-        "file_name": "msql-2024-04-29-14-31-44-information_schema-df658c80-3973-4351-9165-05c207da7315.sql.zip",
-        "id": 5,
-        "timestamp": "2024-04-29T14:31:44.034+08:00"
-      },
-      {
-        "file_name": "msql-2024-04-29-14-33-28-information_schema-ed9a9059-86aa-4914-81b8-31a2c9c07cc1.sql.zip",
-        "id": 9,
-        "timestamp": "2024-04-29T14:33:28.328+08:00"
-      }
-    ]
-  },
-  "message": "success"
-}
+    ```json
+        {
+        "data": {
+            "database_name": "information_schema",
+            "histories": [
+            {
+                "file_name": "msql-2024-04-29-14-31-44-information_schema-df658c80-3973-4351-9165-05c207da7315.sql.zip",
+                "id": 5,
+                "timestamp": "2024-04-29T14:31:44.034+08:00"
+            },
+            {
+                "file_name": "msql-2024-04-29-14-33-28-information_schema-ed9a9059-86aa-4914-81b8-31a2c9c07cc1.sql.zip",
+                "id": 9,
+                "timestamp": "2024-04-29T14:33:28.328+08:00"
+            }
+            ]
+        },
+        "message": "success"
+        }
+    ```
 
 
 3. **POST `/{db_name}`**
@@ -76,13 +79,13 @@ Now you can test using Postman with http://127.0.0.1:3000.
      - Value2: `file.zip`
    - Response:
      ```json
-        "data": {
-            "database_name": "tomatify",
-            "file_name": "msql-2024-04-29-14-13-48-sekolahbeta-ab6f2452-3ba8-45e6-bbb6-3e747dd4b82d.sql.zip",
-            "id": 7,
-            "timestamp": "2024-04-29T14:29:04.319797+08:00"
-        },
-        "message": "success"
+            "data": {
+                "database_name": "tomatify",
+                "file_name": "msql-2024-04-29-14-13-48-sekolahbeta-ab6f2452-3ba8-45e6-bbb6-3e747dd4b82d.sql.zip",
+                "id": 7,
+                "timestamp": "2024-04-29T14:29:04.319797+08:00"
+            },
+            "message": "success"
      ```
 
 4. **GET `/{id}/{download}`**
@@ -90,7 +93,7 @@ Now you can test using Postman with http://127.0.0.1:3000.
    - Middleware: bearer token (Fill the value with your secret key)
    - Response:
      ```json
-     {
-         "message": "File successfully retrieved and saved to the specified download path"
-     }
+            {
+                "message": "File successfully retrieved and saved to the specified download path"
+            }
      ```
