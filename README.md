@@ -40,11 +40,11 @@ Now you can test using Postman with http://127.0.0.1:3000.
      }
      ```
 
+### Endpoints
+
 2. **GET `/{database_name}`**
 
-## Middleware: Bearer Token 
-    - Fill the value with your secret key
-
+   - Middleware: bearer token (Fill the value with your secret key)
    - Response:
     ```json
         {
