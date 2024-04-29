@@ -48,22 +48,22 @@ Now you can test using Postman with http://127.0.0.1:3000.
 ## Response:
     ```json
         {
-        "data": {
-            "database_name": "information_schema",
-            "histories": [
-            {
-                "file_name": "msql-2024-04-29-14-31-44-information_schema-df658c80-3973-4351-9165-05c207da7315.sql.zip",
-                "id": 5,
-                "timestamp": "2024-04-29T14:31:44.034+08:00"
-            },
-            {
-                "file_name": "msql-2024-04-29-14-33-28-information_schema-ed9a9059-86aa-4914-81b8-31a2c9c07cc1.sql.zip",
-                "id": 9,
-                "timestamp": "2024-04-29T14:33:28.328+08:00"
-            }
-            ]
-        },
-        "message": "success"
+           "data": {
+               "database_name": "information_schema",
+               "histories": [
+               {
+                   "file_name": "msql-2024-04-29-14-31-44-information_schema-df658c80-3973-4351-9165-05c207da7315.sql.zip",
+                   "id": 5,
+                   "timestamp": "2024-04-29T14:31:44.034+08:00"
+               },
+               {
+                   "file_name": "msql-2024-04-29-14-33-28-information_schema-ed9a9059-86aa-4914-81b8-31a2c9c07cc1.sql.zip",
+                   "id": 9,
+                   "timestamp": "2024-04-29T14:33:28.328+08:00"
+               }
+               ]
+           },
+           "message": "success"
         }
     ```
 
